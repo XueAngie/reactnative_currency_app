@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Logo from '../../assets/images/Logo.png';
 import UserForm from './userForm';
 
@@ -18,7 +18,8 @@ class AuthComponent extends Component {
                 )
             } else {
                 return(
-                    <View style={styles.container}>
+
+                    <KeyboardAvoidingView behavior="padding"  style={styles.container}>
                         <View style={styles.imgContainer}>
                             <Image
                                 source={Logo}
@@ -27,7 +28,7 @@ class AuthComponent extends Component {
                         </View>
                         <UserForm />
                         
-                    </View>
+                    </KeyboardAvoidingView>
                 )
             }
         
@@ -45,7 +46,8 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     image: {
-        height: 220
+        height: 220,
+        position:'absolute'
     },
     loading:{
         flex:1,
