@@ -42,6 +42,6 @@ export const MainNavigator = () => {
         App:BottomApp,
         Auth:AuthenticationView
     },{
-        initialRouteName:'App'
+        initialRouteName:'Auth'
     }))
 }

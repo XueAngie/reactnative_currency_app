@@ -195,14 +195,15 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     buttonContainer: {
-        backgroundColor: '#2980b6',
+        backgroundColor: '#e8cd1a',
         paddingVertical: 15,
         marginTop:5
     },
     buttonText: {
         color: '#fff',
         textAlign: 'center',
-        fontWeight: '700', 
+        fontWeight: '600',
+        fontSize: 16,
     },
     errorContainer: {
         marginBottom:10,

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard  } from 'react-native';
 import { Logo } from './Logo'
 import  { InputWithButton } from './TextInput'
+import { ClearButton } from  './Button'
 
 const TEMP_BASE_CURRENCY = 'AUD';
 const TEMP_QUOTE_CURRENCY = 'USD';
 const TEMP_BASE_PRICE = '100';
 const TEMP_QUOTE_PRICE = '69.01';
-const TEMP_LAST_CONVERTED = new Date();
 const TEMP_CONVERSION_RATE = 0.79739;
 class CurrencyComponent extends Component {
     handleChangeText = () => {
@@ -47,7 +47,8 @@ class CurrencyComponent extends Component {
                         buttonText={TEMP_QUOTE_CURRENCY}
                         onPress={this.handlePressQuoteCurrency}
                         value={TEMP_QUOTE_PRICE}
-                    />
+                        />
+                        <ClearButton onPress={this.handleSwapCurrency} text="Reverse Currencies" />
                 </KeyboardAvoidingView>
             </View>
 
@@ -62,6 +63,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#e8cd1a',
+        fontSize: 16,
     },
     imgContainer: {
         alignItems: 'center',
