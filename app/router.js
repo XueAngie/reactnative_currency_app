@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 import {
     createStackNavigator,
@@ -15,6 +16,21 @@ import Setting from './components/settings';
 const BottomApp = createBottomTabNavigator({
     Currency:Currency,
     Setting:Setting
+},{
+    initialRouteName:'Currency',
+    defaultNavigationOptions: ({ navigation }) => ({
+        tabBarIcon: ({ focused, horizontal, tintColor }) => {
+            const { routeName } = navigation.state;
+            let icon;
+            if (routeName === 'Currency') {
+                icon = 'repeat';
+            } else if (routeName === 'Setting') {
+                icon = 'settings';
+            }
+
+            return <MaterialIcon name={icon} size={25} color={tintColor} />;
+        }
+    })
 })
 
 const AuthenticationView = createStackNavigator({
