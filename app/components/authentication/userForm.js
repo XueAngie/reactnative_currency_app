@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import Input from '../../helper/forms/input';
 import validation from '../../helper/forms/validation'
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { signIn, signUp } from '../../store/actions/form_actions'
+
 class userForm extends Component {
 
     state = {
@@ -12,7 +16,7 @@ class userForm extends Component {
         hasErrors: false,
         form: {
             email: {
-                userInput: '',
+                value: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
@@ -21,16 +25,15 @@ class userForm extends Component {
                 }
             },
             password: {
-                userInput: '',
+                value: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
                     isRequired: true,
-                    minLength: 6
                 }
             },
             confirmPassword: {
-                userInput: '',
+                value: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
@@ -50,18 +53,18 @@ class userForm extends Component {
         })
     }
 
-    updateInput = (name, userInput) => {
+    updateInput = (name, value) => {
         this.setState({
             hasErrors: false
         })
 
         const formCopy = this.state.form
-        formCopy[name].userInput = userInput
+        formCopy[name].value = value
 
-        //rules
         const rules = formCopy[name].rules
-        const isValid = validation(userInput, rules, formCopy)
+        const isValid = validation(value, rules, formCopy)
 
+        console.log(isValid);
         formCopy[name].valid = isValid
 
         this.setState({
@@ -69,18 +72,60 @@ class userForm extends Component {
         })
     }
 
+    submitUser = () => {
+        let isFormValid = true
+        let formToSubmit = {}
+        const formCopy = this.state.form
+
+        for (let key in formCopy) {
+            if (this.state.type === 'Login') {
+                //LOGIN
+                if (key !== 'confirmPassword') {
+                    isFormValid = isFormValid && formCopy[key].valid;
+                    formToSubmit[key] = formCopy[key].value;
+                }
+
+            } else {
+                // REGISTER
+                isFormValid = isFormValid && formCopy[key].valid;
+                formToSubmit[key] = formCopy[key].value;
+            }
+        }
+
+        if (isFormValid) {
+            if (this.state.type === 'Login') {
+                this.props.signIn(formToSubmit)
+                //     .then(() => {
+                //         this.manageAccess()
+                //     })
+                console.log(formToSubmit)
+            } else {
+                this.props.signUp(formToSubmit)
+                //     .then(() => {
+                    //     this.manageAccess()
+                    // })
+
+                console.log(formToSubmit)
+            }
+        } else {
+            this.setState({
+                hasErrors: true
+            })
+        }
+    }
+
     confirmPassword = () => (
         this.state.type != 'Login' ?
             <Input
-                type={this.state.form.password.type}
-                value={this.state.form.password.userInput}
+                type={this.state.form.confirmPassword.type}
+                value={this.state.form.confirmPassword.value}
                 placeholder='Confirm your password'
-                onChangeText={userInput => this.updateInput("password", userInput)}
+                onChangeText={value => this.updateInput("confirmPassword", value)}
                 secureTextEntry
             />
             : null
     )
-
+    
     formHasError = () => (
         this.state.hasErrors ?
         <View style={styles.errorContainer}>
@@ -88,6 +133,8 @@ class userForm extends Component {
         </View>
         : null
     )
+
+
     
     render(){
         return(
@@ -95,7 +142,7 @@ class userForm extends Component {
                 <Input
                     autoCapitalize="none"
                     type={this.state.form.email.type}
-                    value={this.state.form.email.userInput}
+                    value={this.state.form.email.value}
                     autoCorrect={false}
                     keyboardType={'email-address'}
                     returnKeyType="next"
@@ -106,7 +153,7 @@ class userForm extends Component {
 
                 <Input
                     type={this.state.form.password.type}
-                    value={this.state.form.password.userInput}
+                    value={this.state.form.password.value}
                     placeholder='Enter your password'
                     onChangeText={value => this.updateInput("password", value)}
                     secureTextEntry
@@ -117,6 +164,7 @@ class userForm extends Component {
 
                 <TouchableOpacity 
                     style={styles.buttonContainer}
+                    onPress={this.submitUser}
                     >
                         <Text style={styles.buttonText}>{this.state.action}</Text>
                 </TouchableOpacity>
@@ -161,4 +209,15 @@ const styles = StyleSheet.create({
 })
 
 
-export default userForm;
+function mapStateToProps(state) {
+    console.log("state: ",state)
+    return {
+        User: state.User
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ signIn, signUp }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(userForm)

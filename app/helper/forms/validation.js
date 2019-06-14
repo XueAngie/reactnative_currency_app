@@ -9,14 +9,10 @@ const validation = (value, rules, form) => {
                 break;
             case "isEmail":
                 valid = valid && validateEmail(value)
-
-                console.log(valid);
-                break;
-            case "minLength":
-                valid = valid && validateMinLength(value, rules[rule])
                 break;
             case "confirmPass":
                 valid = valid && validateConfirmPass(value, form[rules.confirmPass].value)
+                // console.log(form[rule.confirmPass]);
                 break;
             default:
                 valid = true
@@ -35,13 +31,6 @@ const validateRequired = value => {
 const validateEmail = email => {
     const expression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return expression.test(String(email).toLocaleLowerCase());
-}
-
-const validateMinLength = (value, ruleValue) => {
-    if (value.length >= ruleValue) {
-        return true
-    }
-    return false
 }
 
 const validateConfirmPass = (confirmPass, pass) => {
