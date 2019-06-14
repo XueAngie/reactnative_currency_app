@@ -1,6 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity,StyleSheet} from 'react-native'
 import React, { Component } from 'react';
 import Input from '../../helper/forms/input';
+import validation from '../../helper/forms/validation'
 
 class userForm extends Component {
 
@@ -11,7 +12,7 @@ class userForm extends Component {
         hasErrors: false,
         form: {
             email: {
-                value: '',
+                userInput: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
@@ -20,7 +21,7 @@ class userForm extends Component {
                 }
             },
             password: {
-                value: '',
+                userInput: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
@@ -29,7 +30,7 @@ class userForm extends Component {
                 }
             },
             confirmPassword: {
-                value: '',
+                userInput: '',
                 valid: false,
                 type: 'textinput',
                 rules: {
@@ -38,20 +39,30 @@ class userForm extends Component {
             }
         }
     }
+    changeFormType = () => {
+        const type = this.state.type
+        const isLogin = type === 'Login'
 
-    updateInput = (name, value) => {
+        this.setState({
+            type: isLogin ? 'Register' : 'Login',
+            action: isLogin ? 'Register' : 'Login',
+            actionMode: isLogin ? 'I want to Login' : 'Register'
+        })
+    }
+
+    updateInput = (name, userInput) => {
         this.setState({
             hasErrors: false
         })
 
         const formCopy = this.state.form
-        formCopy[name].value = value
+        formCopy[name].userInput = userInput
 
         //rules
-        // const rules = formCopy[name].rules
-        // const isValid = ValidateRules(value, rules, formCopy)
+        const rules = formCopy[name].rules
+        const isValid = validation(userInput, rules, formCopy)
 
-        // formCopy[name].valid = isValid
+        formCopy[name].valid = isValid
 
         this.setState({
             form: formCopy
@@ -62,16 +73,16 @@ class userForm extends Component {
         this.state.type != 'Login' ?
             <Input
                 type={this.state.form.password.type}
-                value={this.state.form.password.value}
+                value={this.state.form.password.userInput}
                 placeholder='Confirm your password'
-                onChangeText={value => this.updateInput("password", value)}
+                onChangeText={userInput => this.updateInput("password", userInput)}
                 secureTextEntry
             />
             : null
     )
 
     formHasError = () => (
-        this.state.hasErrors = true ?
+        this.state.hasErrors ?
         <View style={styles.errorContainer}>
             <Text style={styles.errorLabel}>Error, check your details</Text>
         </View>
@@ -84,7 +95,7 @@ class userForm extends Component {
                 <Input
                     autoCapitalize="none"
                     type={this.state.form.email.type}
-                    value={this.state.form.email.value}
+                    value={this.state.form.email.userInput}
                     autoCorrect={false}
                     keyboardType={'email-address'}
                     returnKeyType="next"
@@ -95,26 +106,27 @@ class userForm extends Component {
 
                 <Input
                     type={this.state.form.password.type}
-                    value={this.state.form.password.value}
+                    value={this.state.form.password.userInput}
                     placeholder='Enter your password'
                     onChangeText={value => this.updateInput("password", value)}
                     secureTextEntry
                 />
 
                 {this.confirmPassword()}
-
                 {this.formHasError()}
 
                 <TouchableOpacity 
-                    style={styles.buttonContainer}>
-                        <Text style={styles.buttonText}>LOGIN</Text>
+                    style={styles.buttonContainer}
+                    >
+                        <Text style={styles.buttonText}>{this.state.action}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={styles.buttonContainer}>
+                    style={styles.buttonContainer}
+                    onPress={this.changeFormType}>
                         <Text
                         style={styles.buttonText}>
-                            Sign Up
+                            {this.state.actionMode}
                         </Text>
                 </TouchableOpacity> 
             </View>
@@ -124,7 +136,6 @@ class userForm extends Component {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        flex:1,
     },
     buttonContainer: {
         backgroundColor: '#2980b6',

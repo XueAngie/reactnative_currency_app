@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     image: {
-        height: 220,
+        height: 200,
         position:'absolute'
     },
     loading:{
