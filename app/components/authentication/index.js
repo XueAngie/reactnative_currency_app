@@ -8,7 +8,9 @@ class AuthComponent extends Component {
     state = {
         isLoading:false
     }
-
+    getApp = () => {
+        this.props.navigation.navigate('App');
+    }
     render() {
             if(this.state.isLoading){
                 return(
@@ -26,7 +28,8 @@ class AuthComponent extends Component {
                                 style={styles.image}
                                 resizeMode={'contain'} />
                         </View>
-                        <UserForm />
+                        <UserForm 
+                            goNext = {this.getApp}/>
                         
                     </KeyboardAvoidingView>
                 )

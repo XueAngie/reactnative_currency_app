@@ -72,6 +72,15 @@ class userForm extends Component {
         })
     }
 
+    getAccess = () => {
+        if(!this.props.User.auth.uid){
+            this.setState({hasErrors:true})
+        } else {
+            this.setState({hasErrors:false});
+            this.props.goNext();
+        }
+    }
+
     submitUser = () => {
         let isFormValid = true
         let formToSubmit = {}
@@ -95,15 +104,15 @@ class userForm extends Component {
         if (isFormValid) {
             if (this.state.type === 'Login') {
                 this.props.signIn(formToSubmit)
-                //     .then(() => {
-                //         this.manageAccess()
-                //     })
+                    .then(() => {
+                        this.getAccess()
+                    })
                 console.log(formToSubmit)
             } else {
                 this.props.signUp(formToSubmit)
-                //     .then(() => {
-                    //     this.manageAccess()
-                    // })
+                    .then(() => {
+                        this.getAccess()
+                    })
 
                 console.log(formToSubmit)
             }

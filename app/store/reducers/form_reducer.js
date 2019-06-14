@@ -11,7 +11,6 @@ export default function( state={}, action ) {
                 ...state,
                 auth: {
                     uid: action.payload.localId || false,
-                    token: action.payload.idToken || false,
                 }
             }
             break;
@@ -21,7 +20,6 @@ export default function( state={}, action ) {
                 ...state,
                 auth: {
                     uid: action.payload.localId || false,
-                    token: action.payload.idToken || false,
                 }
             }
             break;

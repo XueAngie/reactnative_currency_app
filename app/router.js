@@ -23,7 +23,7 @@ const AuthenticationView = createStackNavigator({
 
 export const MainNavigator = () => {
     return createAppContainer(createSwitchNavigator({
-        Bottom:BottomApp,
+        App:BottomApp,
         Auth:AuthenticationView
     },{
         initialRouteName:'Auth'
