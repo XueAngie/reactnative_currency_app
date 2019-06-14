@@ -9,8 +9,9 @@ export default function( state={}, action ) {
         case SIGN_IN:
             return {
                 ...state,
-                auth:{
-                    email:action.payload.email || false
+                auth: {
+                    uid: action.payload.localId || false,
+                    token: action.payload.idToken || false,
                 }
             }
             break;
@@ -19,7 +20,8 @@ export default function( state={}, action ) {
             return {
                 ...state,
                 auth: {
-                    email: action.payload.email || false
+                    uid: action.payload.localId || false,
+                    token: action.payload.idToken || false,
                 }
             }
             break;

@@ -3,62 +3,60 @@ import {
     SIGN_UP,
 } from '../types'
 
-// import axios from 'axios'
+import axios from 'axios'
+import { SIGNUP, SIGNIN } from '../../helper/config';
 
-export function signUp() {
+export function signUp(data) {
 
-    // const request = axios({
-    //     method: 'POST',
-    //     url: SIGNUP_URL,
-    //     data: {
-    //         email: data.email,
-    //         password: data.password,
-    //         returnSecureToken: true
-    //     },
-    //     header: {
-    //         "Content-Type": "application/json"
-    //     }
-    // })
-    //     .then(response => {
-    //         console.log(response.data)
-    //         return response.data
-    //     })
-    //     .catch(e => {
-    //         return false
-    //     })
+    const request = axios({
+        method: 'POST',
+        url: SIGNUP,
+        data: {
+            email: data.email,
+            password: data.password,
+            returnSecureToken: true
+        },
+        header: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            console.log(response.data)
+            return response.data
+        })
+        .catch(e => {
+            return false
+        })
 
     return {
         type: SIGN_UP,
-        payload: {
-            email:'test@gmail.com',
-        }
+        payload: request
     }
 }
 
-export function signIn() {
+export function signIn(data) {
 
-    // const request = axios({
-    //     method: 'POST',
-    //     url: SIGNIN_URL,
-    //     data: {
-    //         email: data.email,
-    //         password: data.password,
-    //         returnSecureToken: true
-    //     },
-    //     header: {
-    //         "Content-Type": "application/json"
-    //     }
-    // })
-    //     .then(response => {
-    //         return response.data
-    //     })
-    //     .catch(e => {
-    //         return false
-    //     })
+    const request = axios({
+        method: 'POST',
+        url: SIGNIN,
+        data: {
+            email: data.email,
+            password: data.password,
+            returnSecureToken: true
+        },
+        header: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(response => {
+            return response.data
+        })
+        .catch(e => {
+            return false
+        })
     return {
         type: SIGN_IN,
-        payload: {
-            email: 'test@gmail.com',
+        payload: request
         }
     }
-}
+
